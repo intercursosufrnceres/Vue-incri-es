@@ -1,8 +1,18 @@
 function sendEmail(pdfBase64, curso, Modalidade) {
-  return Email.send({
+  // Verifica se as variáveis de ambiente estão carregadas corretamente
+  const username = import.meta.env.VITE_USERNAME_EMAIL;
+  const password = import.meta.env.VITE_PASSWORD_EMAIL;
+
+  // Valida se as variáveis de ambiente estão definidas
+  if (!username || !password) {
+    console.error("Faltando nome de usuário ou senha do e-mail.");
+    return;
+  }
+
+  Email.send({
     Host: "smtp.elasticemail.com",
-    Username: import.meta.env.VITE_USERNAME_EMAIL,
-    Password: import.meta.env.VITE_PASSWORD_EMAIL,
+    Username: username,
+    Password: password,
     To: "incricaointercursos@gmail.com",
     From: "incricaointercursos@gmail.com",
     Subject: `Inscrição Intercursos, Curso: ${curso}.`,
@@ -14,8 +24,13 @@ function sendEmail(pdfBase64, curso, Modalidade) {
         contentType: "application/pdf",
       },
     ],
+  }).then(response => {
+    console.log("E-mail enviado com sucesso:", response);
+  }).catch(error => {
+    console.error("Erro ao enviar e-mail:", error);
   });
 }
+
 export function updateTeams() {
   const gender = document.getElementById("genderSelect").value;
   const teamSelect = document.getElementById("teamSelect");
