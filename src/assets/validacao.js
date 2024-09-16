@@ -56,9 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
         array1.push(`file${i}`);
     }
 
-    // Filtra os IDs que estão faltando
-    const resultArray = array1.filter(item => !filledFieldIds.includes(item));
-
+    // Remove os campos preenchidos corretamente do array de campos esperados
+    const resultArray = checkFirstSixFieldsets()
     // Aplica os estilos de erro para os campos não preenchidos
     applyStyles(unfilledFieldIds);
 
@@ -205,3 +204,33 @@ function checkTimeAndModality() {
   }
   return test;
 }
+function checkFirstSixFieldsets() {
+  const fieldsets = document.querySelectorAll(".athlete-row");
+  const unfilledFieldIds = []; // Array para armazenar os IDs dos campos não preenchidos
+  const requiredFieldsets = 6; // Limite de fieldsets a serem verificados (6 primeiros)
+
+  // Itera sobre os primeiros 6 fieldsets
+  for (let i = 0; i < Math.min(fieldsets.length, requiredFieldsets); i++) {
+      const fieldset = fieldsets[i];
+      
+      const nameInput = fieldset.querySelector('input[name^="name"]');
+      const matriculaInput = fieldset.querySelector('input[name^="matricula"]');
+      const fileInput = fieldset.querySelector('input[type="file"]');
+
+      // Verifica se algum dos campos não está preenchido (e se o campo existe)
+      if (nameInput && nameInput.value.trim() === "") {
+          unfilledFieldIds.push(nameInput.id); // Adiciona o ID do campo não preenchido
+      }
+      
+      if (matriculaInput && matriculaInput.value.trim() === "") {
+          unfilledFieldIds.push(matriculaInput.id); // Adiciona o ID do campo não preenchido
+      }
+      
+      if (fileInput && fileInput.files.length === 0) {
+          unfilledFieldIds.push(fileInput.id); // Adiciona o ID do campo não preenchido
+      }
+  }
+
+  return unfilledFieldIds; // Retorna o array de IDs dos campos não preenchidos
+}
+
