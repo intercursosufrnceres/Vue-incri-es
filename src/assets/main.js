@@ -45,6 +45,7 @@ export function updateTeams() {
             <option value="Ciências Contábeis">Ciências Contábeis</option>
             <option value="Bacharelado em Sistemas de Informação (BSI)">Bacharelado em Sistemas de Informação (BSI)</option>
             <option value="Matematica">Matemática</option>
+            <option value="Geografia">Geografia</option>
           `;
   } else if (gender === "Feminino") {
     teamsHtml += `
